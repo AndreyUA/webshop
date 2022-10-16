@@ -17,10 +17,12 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from "./components/header/header.component";
+import { HomeComponent } from "./components/pages/home/home.component";
+import { ProductsHeaderComponent } from './components/pages/home/components/products-header/products-header.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, HomeComponent, ProductsHeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
