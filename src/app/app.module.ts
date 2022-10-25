@@ -18,14 +18,22 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
-import { HomeComponent } from "./components/pages/home/home.component";
-import { ProductsHeaderComponent } from './components/pages/home/components/products-header/products-header.component';
-import { FiltersComponent } from './components/pages/home/components/filters/filters.component';
-import { ProductBoxComponent } from './components/pages/home/components/product-box/product-box.component';
-import { CartComponent } from './components/pages/cart/cart.component';
+import { HomeComponent } from "./pages/home/home.component";
+import { ProductsHeaderComponent } from "./pages/home/components/products-header/products-header.component";
+import { FiltersComponent } from "./pages/home/components/filters/filters.component";
+import { ProductBoxComponent } from "./pages/home/components/product-box/product-box.component";
+import { CartComponent } from "./pages/cart/cart.component";
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, HomeComponent, ProductsHeaderComponent, FiltersComponent, ProductBoxComponent, CartComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    HomeComponent,
+    ProductsHeaderComponent,
+    FiltersComponent,
+    ProductBoxComponent,
+    CartComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
