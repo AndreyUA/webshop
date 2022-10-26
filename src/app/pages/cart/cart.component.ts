@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
 
 import { Cart, CartItem } from "src/app/models/cart.model";
 import { CartService } from "src/app/services/cart.service";
@@ -7,7 +8,8 @@ import { CartService } from "src/app/services/cart.service";
   selector: "app-cart",
   templateUrl: "./cart.component.html",
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
+  cart$: Subscription | null = null;
   cart: Cart = {
     items: [
       {
@@ -54,9 +56,26 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource = this.cart.items;
+
+    this.cart$ = this.cartService.cart.subscribe((cart: Cart) => {
+      this.cart = cart;
+      this.dataSource = this.cart.items;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.cart$?.unsubscribe();
   }
 
   getTotal(items: CartItem[]): number {
     return this.cartService.getTotal(items);
+  }
+
+  onClearCart(): void {
+    this.cartService.clearCart();
+  }
+
+  onRemoveFromCart(item: CartItem): void {
+    this.cartService.removeFromCart(item);
   }
 }

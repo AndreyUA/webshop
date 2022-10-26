@@ -41,4 +41,18 @@ export class CartService {
       duration: 3000,
     });
   }
+
+  removeFromCart(item: CartItem): void {
+    const updatedItems = this.cart.value.items.filter(
+      (cartItem) => cartItem.id !== item.id
+    );
+
+    this.cart.next({
+      items: updatedItems,
+    });
+
+    this.snackBar.open("1 item removed from cart", "OK", {
+      duration: 3000,
+    });
+  }
 }
