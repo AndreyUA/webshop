@@ -42,11 +42,45 @@ export class CartService {
     });
   }
 
-  removeFromCart(item: CartItem): void {
-    const updatedItems = [...this.cart.value.items];
+  reduceQuantity(item: CartItem): void {
+    let itemToRemove: CartItem | undefined = undefined;
+
+    const updatedItems = this.cart.value.items.map((cartItem) => {
+      if (cartItem.id !== item.id) {
+        return cartItem;
+      }
+
+      cartItem.quantity--;
+
+      if (cartItem.quantity === 0) {
+        itemToRemove = cartItem;
+      }
+
+      return cartItem;
+    });
+
+    if (!!itemToRemove) {
+      this.removeFromCart(itemToRemove);
+
+      return;
+    }
 
     this.cart.next({
-      items: updatedItems.filter((cartItem) => cartItem.id !== item.id),
+      items: updatedItems,
+    });
+
+    this.snackBar.open("1 item removed from cart", "OK", {
+      duration: 3000,
+    });
+  }
+
+  removeFromCart(item: CartItem): void {
+    const updatedItems = this.cart.value.items.filter(
+      (cartItem) => cartItem.id !== item.id
+    );
+
+    this.cart.next({
+      items: updatedItems,
     });
 
     this.snackBar.open("1 item removed from cart", "OK", {
