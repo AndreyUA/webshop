@@ -27,4 +27,18 @@ export class CartService {
 
     console.log(this.cart.value);
   }
+
+  getTotal(items: CartItem[]): number {
+    return items.reduce(
+      (totalPrice, totalItemPrice) => totalPrice + totalItemPrice.quantity,
+      0
+    );
+  }
+
+  clearCart(): void {
+    this.cart.next({ items: [] });
+    this.snackBar.open("Cart is clear", "OK", {
+      duration: 3000,
+    });
+  }
 }
