@@ -43,12 +43,10 @@ export class CartService {
   }
 
   removeFromCart(item: CartItem): void {
-    const updatedItems = this.cart.value.items.filter(
-      (cartItem) => cartItem.id !== item.id
-    );
+    const updatedItems = [...this.cart.value.items];
 
     this.cart.next({
-      items: updatedItems,
+      items: updatedItems.filter((cartItem) => cartItem.id !== item.id),
     });
 
     this.snackBar.open("1 item removed from cart", "OK", {
