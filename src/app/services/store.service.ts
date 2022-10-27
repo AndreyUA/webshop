@@ -13,10 +13,23 @@ export class StoreService {
 
   getAllProducts(
     limit: number = 12,
-    sort: string = "desc"
+    sort: string = "desc",
+    category?: string
   ): Observable<Product[]> {
+    if (!category) {
+      return this.httpClient.get<Product[]>(
+        `${STORE_BASE_URL}/products?sort=${sort}&limit=${limit}`
+      );
+    }
+
     return this.httpClient.get<Product[]>(
-      `${STORE_BASE_URL}/products?sort=${sort}&limit=${limit}`
+      `${STORE_BASE_URL}/products/category/${category}?sort=${sort}&limit=${limit}`
+    );
+  }
+
+  getAllCategories(): Observable<string[]> {
+    return this.httpClient.get<string[]>(
+      `${STORE_BASE_URL}/products/categories`
     );
   }
 }
