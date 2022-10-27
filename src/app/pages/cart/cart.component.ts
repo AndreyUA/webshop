@@ -1,5 +1,7 @@
+import { HttpClient } from "@angular/common/http";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
+import { loadStripe } from "@stripe/stripe-js";
 
 import { Cart, CartItem } from "src/app/models/cart.model";
 import { CartService } from "src/app/services/cart.service";
@@ -10,6 +12,7 @@ import { CartService } from "src/app/services/cart.service";
 })
 export class CartComponent implements OnInit, OnDestroy {
   cart$: Subscription | null = null;
+  checkout$: Subscription | null = null;
   cart: Cart = {
     items: [
       {
@@ -52,7 +55,10 @@ export class CartComponent implements OnInit, OnDestroy {
     "action",
   ];
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private httpClient: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.dataSource = this.cart.items;
@@ -65,6 +71,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cart$?.unsubscribe();
+    this.checkout$?.unsubscribe();
   }
 
   getTotal(items: CartItem[]): number {
@@ -73,6 +80,26 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onAddQuantity(item: CartItem): void {
     this.cartService.addToCart(item);
+  }
+
+  onCheckout(): void {
+    this.checkout$ = this.httpClient
+      .post("http://localhost:8000/checkout", {
+        items: this.cart.items,
+      })
+      .subscribe(async (response: any) => {
+        try {
+          let stripe = await loadStripe(
+            "pk_test_51LxbbjGuRlF5pgZEc3ShjX4b8YCUT5Srkm596wEpmkwPPVwdsfe1flp4Z2aT0P6MstQK6Q4Xs8StkJQ9Kvm8Bw1w00rRkL5FQK"
+          );
+
+          stripe?.redirectToCheckout({
+            sessionId: response.id,
+          });
+        } catch (error) {
+          console.log("error", error);
+        }
+      });
   }
 
   onClearCart(): void {
