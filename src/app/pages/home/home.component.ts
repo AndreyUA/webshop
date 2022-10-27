@@ -44,6 +44,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((products) => (this.products = products));
   }
 
+  onItemsCountChange(count: number): void {
+    this.count = count;
+
+    this.getProducts();
+  }
+
   onAddToCart($event: Product): void {
     this.cartService.addToCart({
       id: $event.id,
@@ -61,5 +67,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onShowCategory(currentCategory: string): void {
     this.category = currentCategory;
+  }
+
+  onSortChange(sort: string): void {
+    this.sort = sort;
+
+    this.getProducts();
   }
 }
